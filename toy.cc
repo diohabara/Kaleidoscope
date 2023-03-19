@@ -468,6 +468,7 @@ Function *PrototypeAST::codegen() {
 
   Function *F =
       Function::Create(FT, Function::ExternalLinkage, Name, TheModule.get());
+  fprintf(stderr, "debug!\n");
 
   // Set names for all arguments.
   unsigned Idx = 0;
@@ -529,7 +530,7 @@ static void InitializeModule() {
 static void HandleDefinition() {
   if (auto FnAST = ParseDefinition()) {
     if (auto *FnIR = FnAST->codegen()) {
-      fprintf(stderr, "Parsed a function definition\n");
+      fprintf(stderr, "Read a function definition\n");
       FnIR->print(errs());
       fprintf(stderr, "\n");
     }
@@ -542,7 +543,7 @@ static void HandleDefinition() {
 static void HandleExtern() {
   if (auto ProtoAST = ParseExtern()) {
     if (auto *FnIR = ProtoAST->codegen()) {
-      fprintf(stderr, "Parsed an extern\n");
+      fprintf(stderr, "Read an extern\n");
       FnIR->print(errs());
       fprintf(stderr, "\n");
     }
@@ -556,7 +557,7 @@ static void HandleTopLevelExpression() {
   // Evaluate a top-level expression into an anonymous function.
   if (auto FnAST = ParseTopLevelExpr()) {
     if (auto *FnIR = FnAST->codegen()) {
-      fprintf(stderr, "Parsed a top-level expr\n");
+      fprintf(stderr, "Read a top-level expr\n");
       FnIR->print(errs());
       fprintf(stderr, "\n");
 
