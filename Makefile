@@ -7,9 +7,9 @@ run: build
 	./a.out
 
 build: $(wildcard *.cc)
-	g++ $?
+	g++ -g -std=c++17 -O3 $? `llvm-config --cxxflags`
 
-fomrat:
-	fd "[cc|h]$" | xargs clang-format -i
+format:
+	fd "[cc|h]$$" | xargs clang-format -i
 
 .PHONY: build format
