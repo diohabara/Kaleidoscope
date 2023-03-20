@@ -511,7 +511,7 @@ Function *FunctionAST::codegen() {
   // reference to it for use below.
   auto &P = *Proto;
   FunctionProtos[Proto->getName()] = std::move(Proto);
-  Function *TheFunction = getFunction(Proto->getName());
+  Function *TheFunction = getFunction(P.getName());
 
   if (!TheFunction) {
     return nullptr;
