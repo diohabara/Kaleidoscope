@@ -10,7 +10,7 @@ run: build
 	./toy
 
 build: toy.cc
-	clang++ -g -std=c++17 $? `llvm-config --cxxflags --ldflags --system-libs --libs core orcjit native` -O3 -o toy
+	clang++ -g -rdynamic -std=c++17 $? `llvm-config --cxxflags --ldflags --system-libs --libs core orcjit native` -O3 -o toy
 
 format:
 	fd "[cc|h]$$" | xargs clang-format -i
