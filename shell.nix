@@ -3,6 +3,7 @@ stdenv.mkDerivation {
   name = "llvm-dev";
   buildInputs = [
     llvmPackages_15.libcxxClang
+    # llvmPackages_15.clangUseLLVM
     llvmPackages_15.llvm
   ];
 }
