@@ -72,7 +72,7 @@ static SourceLocation CurLoc;
 static SourceLocation LexLoc = {1, 0};
 
 static int advance() {
-  int LastChar = getchat();
+  int LastChar = getchar();
 
   if (LastChar == '\n' || LastChar == '\r') {
     LexLoc.Line++;
@@ -1316,11 +1316,11 @@ Function *FunctionAST::codegen() {
     // Finish off the function.
     Builder->CreateRet(RetVal);
 
+    // Pop off the lexical block for the function.
+    KSDbgInfo.LexicalBlocks.pop_back();
+
     // Validate the generated code, checking for consistency.
     verifyFunction(*TheFunction);
-
-    // Optimize the function.
-    TheFPM->run(*TheFunction);
 
     return TheFunction;
   }
@@ -1329,7 +1329,7 @@ Function *FunctionAST::codegen() {
   TheFunction->eraseFromParent();
 
   if (P.isBinaryOp()) {
-    BinopPrecedence.erase(Proto.getOperatorName());
+    BinopPrecedence.erase(Proto->getOperatorName());
   }
 
   // Pop off the lexical block for the function since we added it
@@ -1452,7 +1452,7 @@ int main() {
 
   // Darwin only supports dwarf version 2.
   if (Triple(sys::getProcessTriple()).isOSDarwin())
-    TheModule->addModuleFlag(Module::Override, "Dwarf Version", 2);
+    TheModule->addModuleFlag(llvm::Module::Warning, "Dwarf Version", 2);
 
   // Construct the DIBuilder, we do this here because we need the module.
   DBuilder = std::make_unique<DIBuilder>(*TheModule);
