@@ -1,8 +1,0 @@
-{
-  "files.associations": {
-    "*.v": "coq",
-    "*.asm": "gas",
-    "*.ts": "typescript",
-    "memory": "cpp"
-  }
-}

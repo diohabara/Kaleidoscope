@@ -32,6 +32,6 @@ format:
 	fd "[cc|h]$$" | xargs clang-format -i
 
 clean:
-	rm -rf toy a.out main obj output.o debug *.dSYM
+	rm -rf toy a.out main obj output.o debug *.dSYM link
 
 .PHONY: build format link
