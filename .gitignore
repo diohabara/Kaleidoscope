@@ -37,3 +37,4 @@ toy
 *.dSYM/
 obj
 main
+debug
