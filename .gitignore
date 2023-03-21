@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+
+# program
+toy
+
+*.dSYM/
+obj
+main
+debug
