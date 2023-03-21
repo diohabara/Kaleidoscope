@@ -9,11 +9,18 @@ help:
 run: build
 	./toy
 
-link: output.o
-	clang++ main.cc output.o -o main
+ch9: debug
+	./debug < fib.ks | clang -x ir -
 
-output.o: obj.cc
+ch8: link output.o
+	./link
+
+link: output.o
+	clang++ main.cc output.o -o link
+
+obj: obj.cc
 	clang++ -g -rdynamic -std=c++17 $? `llvm-config --cxxflags --ldflags --system-libs --libs all` -o obj
+	./obj
 
 build: toy.cc
 	clang++ -g -rdynamic -std=c++17 $? `llvm-config --cxxflags --ldflags --system-libs --libs all` -o toy
