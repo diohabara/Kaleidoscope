@@ -1,4 +1,12 @@
 {
   "nixEnvSelector.nixFile": "${workspaceRoot}/shell.nix",
-  "C_Cpp.errorSquiggles": "enabled"
+  "C_Cpp.errorSquiggles": "enabled",
+  "files.associations": {
+    "*.v": "coq",
+    "*.asm": "gas",
+    "*.ts": "typescript",
+    "memory": "cpp",
+    "*.def": "cpp",
+    "string": "cpp"
+  }
 }

@@ -18,10 +18,13 @@ output.o: obj.cc
 build: toy.cc
 	clang++ -g -rdynamic -std=c++17 $? `llvm-config --cxxflags --ldflags --system-libs --libs all` -o toy
 
+debug: debug.cc
+	clang++ -g -rdynamic -std=c++17 $? `llvm-config --cxxflags --ldflags --system-libs --libs core orcjit native` -o debug
+
 format:
 	fd "[cc|h]$$" | xargs clang-format -i
 
 clean:
-	rm -f toy
+	rm -f toy a.out main obj output.o debug
 
-.PHONY: build format
+.PHONY: build format link
