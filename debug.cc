@@ -72,7 +72,7 @@ static SourceLocation CurLoc;
 static SourceLocation LexLoc = {1, 0};
 
 static int advance() {
-  int LastChar = getchar();
+  int LastChar = getchat();
 
   if (LastChar == '\n' || LastChar == '\r') {
     LexLoc.Line++;
@@ -92,12 +92,12 @@ static int gettok() {
 
   // skip any whitespace
   while (isspace(LastChar)) {
-    LastChar = getchar();
+    LastChar = advance();
   }
 
   if (isalpha(LastChar)) { // identifier: [a-zA-Z][a-zA-Z0-9]*
     IdentifierStr = LastChar;
-    while (isalnum((LastChar = getchar()))) {
+    while (isalnum((LastChar = advance()))) {
       IdentifierStr += LastChar;
     }
     if (IdentifierStr == "def") {
@@ -137,7 +137,7 @@ static int gettok() {
     std::string NumStr;
     do {
       NumStr += LastChar;
-      LastChar = getchar();
+      LastChar = advance();
     } while (isdigit(LastChar) || LastChar == '.');
     NumVal = strtod(NumStr.c_str(), nullptr);
     return tok_number;
@@ -145,7 +145,7 @@ static int gettok() {
   if (LastChar == '#') {
     // comment until end of line
     do {
-      LastChar = getchar();
+      LastChar = advance();
     } while (LastChar != EOF && LastChar != '\n' && LastChar != '\r');
     if (LastChar != EOF) {
       return gettok();
@@ -159,7 +159,7 @@ static int gettok() {
 
   // otherwise, just return the character as its ascii value.
   int ThisChar = LastChar;
-  LastChar = getchar();
+  LastChar = advance();
   return ThisChar;
 }
 
@@ -1148,8 +1148,8 @@ Value *ForExprAST::codegen() {
 
   // Reload, increment, and restore the alloca.  This handles the case where
   // the body of the loop mutates the variable.
-  Value *CurVar =
-      Builder->CreateLoad(Alloca->getAllocatedType(), Alloca, VarName.c_str());
+  Value *CurVar = Builder->CreateLoad(Type::getDoubleTy(*TheContext), Alloca,
+                                      VarName.c_str());
   Value *NextVar = Builder->CreateFAdd(CurVar, StepVal, "nextvar");
   Builder->CreateStore(NextVar, Alloca);
 
@@ -1285,7 +1285,7 @@ Function *FunctionAST::codegen() {
 
   // Unset the location for the prologue emission (leading instructions with no
   // location in a function are considered part of the prologue and the debugger
-  // will run past them when breaking on a function)
+  // will run past them when breaking on a
   KSDbgInfo.emitLocation(nullptr);
 
   // Record the function arguments in the NamedValues map.
@@ -1329,7 +1329,7 @@ Function *FunctionAST::codegen() {
   TheFunction->eraseFromParent();
 
   if (P.isBinaryOp()) {
-    BinopPrecedence.erase(P.getOperatorName());
+    BinopPrecedence.erase(Proto.getOperatorName());
   }
 
   // Pop off the lexical block for the function since we added it
