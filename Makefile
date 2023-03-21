@@ -9,8 +9,14 @@ help:
 run: build
 	./toy
 
+link: output.o
+	clang++ main.cc output.o -o main
+
+output.o: obj.cc
+	clang++ -g -rdynamic -std=c++17 $? `llvm-config --cxxflags --ldflags --system-libs --libs all` -o obj
+
 build: toy.cc
-	clang++ -g -rdynamic -std=c++17 $? `llvm-config --cxxflags --ldflags --system-libs --libs core orcjit native` -O3 -o toy
+	clang++ -g -rdynamic -std=c++17 $? `llvm-config --cxxflags --ldflags --system-libs --libs all` -o toy
 
 format:
 	fd "[cc|h]$$" | xargs clang-format -i

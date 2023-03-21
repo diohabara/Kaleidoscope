@@ -35,3 +35,5 @@
 toy
 
 *.dSYM/
+obj
+main
